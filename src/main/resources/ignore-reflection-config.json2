@@ -1,0 +1,83 @@
+#[
+#  {
+#    "name" : "life.genny.qwanda.entity.BaseEntity",
+#    "allDeclaredConstructors" : true,
+#    "allPublicConstructors" : true,
+#    "allDeclaredMethods" : true,
+#    "allPublicMethods" : true,
+#    "allDeclaredFields" : true,
+##    "allPublicFields" : true
+# },
+    {
+    "name" : "life.genny.qwanda.Answer",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.AnswerLink",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.attribute.Attribute",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.attribute.EntityAttribute",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.attribute.EntityAttributeId",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.datatype.DataType",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.validation.Validation",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  },
+    {
+    "name" : "life.genny.qwanda.validation.ValidationList",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  }
+]
