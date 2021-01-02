@@ -309,6 +309,57 @@ public class GennyToken implements Serializable {
 		return (String) adecodedTokenMap.get("jti");
 	}
 
+	// Unique uuid
+	@XmlTransient
+	@Transient
+	public String getUuid() {
+		String uuid =  null;
+		
+		try {
+			uuid = (String) adecodedTokenMap.get("sub");
+		} catch (Exception e) {
+			log.info("Not a valid user");
+		}
+		
+		return uuid;
+	}
+	
+	// Name
+	@XmlTransient
+	@Transient
+	public String getName() {
+		return (String) adecodedTokenMap.get("name");
+	}
+	
+	// FirstName
+	@XmlTransient
+	@Transient
+	public String getFirstname() {
+		return (String) adecodedTokenMap.get("given_name");
+	}
+
+	// LastName
+	@XmlTransient
+	@Transient
+	public String getLastname() {
+		return (String) adecodedTokenMap.get("family_name");
+	}
+
+	// Email
+	@XmlTransient
+	@Transient
+	public String getEmail() {
+		return (String) adecodedTokenMap.get("email");
+	}
+
+	// Email Verified
+	@XmlTransient
+	@Transient
+	public Boolean isEmailVerified() {
+		return (Boolean) adecodedTokenMap.get("email_verified");
+	}
+
+	
 	/**
 	 * @return the userRoles
 	 */

@@ -64,7 +64,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import au.com.crowtech.quarkus.nest.models.GennyToken;
 import io.vertx.core.json.JsonObject;
 
 
@@ -1125,6 +1125,36 @@ public class KeycloakUtils {
 	}
 	
 		
+	public static String getKeycloakUserUuid(String keycloakUrl, GennyToken userToken, final String realm, final String uuid) throws IOException {
+	    
+		
+    	String url = keycloakUrl + "/auth/admin/realms/" + realm + "/users/" + uuid;
+    	String result = sendGET(url,userToken.getToken());
+    	
+	        
+    return result;
+}  
+
+
+public static String getKeycloakUserUuidRoles(String keycloakUrl, GennyToken userToken, final String realm, final String uuid) throws IOException {
+    
+	
+	String url = keycloakUrl + "/auth/admin/realms/" + realm + "/users/" + uuid+"/role-mappings";
+	String result = sendGET(url,userToken.getToken());
+	
+        
+return result;
+}  
+
+
+public static String getKeycloakUserId(String keycloakUrl, GennyToken userToken, final String realm, final String username) throws IOException {
+
+final List<LinkedHashMap> users = fetchKeycloakUsers(keycloakUrl,userToken, realm, username);
+if(!users.isEmpty()) {
+  return (String) users.get(0).get("id");
+}
+return null;
+}
 //		curl --request POST 'https://path-to-your-host.com/auth/realms/your-realm/account/credentials/password' \
 //		--header 'Accept: application/json' \
 //		--header "Authorization: Bearer $ACCESS_TOKEN" \
@@ -1134,4 +1164,39 @@ public class KeycloakUtils {
 //		    "newPassword": "newPassword",
 //		    "confirmation": "newPassword"
 //		}'
+
+public static List<LinkedHashMap> fetchKeycloakUsers(String keycloakUrl,GennyToken userToken, final String realm, final String username) {
+	List<LinkedHashMap> results = new ArrayList<LinkedHashMap>();
+    final HttpClient client = new DefaultHttpClient();
+
+    
+    try {
+    	String encodedUsername = encodeValue(username);
+    	String url = /*keycloakUrl + */keycloakUrl+"/auth/admin/realms/" + realm + "/users?username=" + encodedUsername;
+      final HttpGet get =
+          new HttpGet(url);
+		get.addHeader("Content-Type", "application/json");
+		get.addHeader("Authorization", "Bearer " + userToken.getToken());
+
+      try {
+        final HttpResponse response = client.execute(get);
+        if (response.getStatusLine().getStatusCode() != 200) {
+          throw new IOException();
+        }
+        final HttpEntity entity = response.getEntity();
+        final InputStream is = entity.getContent();
+        try {
+          results = JsonSerialization.readValue(is, (new ArrayList<UserRepresentation>()).getClass());
+        } finally {
+          is.close();
+        }
+      } catch (final IOException e) {
+        throw new RuntimeException(e);
+      }
+    } finally {
+      client.getConnectionManager().shutdown();
+    }
+    return results;
+  }
+
 }
