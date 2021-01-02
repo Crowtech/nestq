@@ -191,7 +191,6 @@ public class Value implements Serializable {
 	
 	@Override
 	public String toString() {
-		String ret = "";
 		if (valueString!=null) {
 			return valueString;
 		} else if (valueBoolean != null){

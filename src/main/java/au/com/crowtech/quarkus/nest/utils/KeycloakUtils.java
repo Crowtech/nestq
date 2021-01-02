@@ -31,10 +31,7 @@ import javax.json.JsonException;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +54,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.jboss.logging.Logger;
-
 import org.keycloak.OAuth2Constants;
 import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -68,7 +64,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import au.com.crowtech.quarkus.nest.adapters.ValueAdapter;
+
 import io.vertx.core.json.JsonObject;
 
 
@@ -102,7 +98,6 @@ public class KeycloakUtils {
 			JsonObject content = KeycloakUtils.getSecureTokenPayload(keycloakUrl, realm, clientId, secret, username, password);
 			if(content != null) {
 				JsonbConfig config = new JsonbConfig()
-			    .withAdapters(new ValueAdapter())
 			    .withNullValues(false)
 			    .withFormatting(true);
 
