@@ -185,16 +185,22 @@ public class GennyToken implements Serializable {
 	}
 
 	private void setupRoles() {
-		String realm_accessStr = adecodedTokenMap.get("realm_access").toString();
-		Pattern p = Pattern.compile("(?<=\\[)([^\\]]+)(?=\\])");
-		Matcher m = p.matcher(realm_accessStr);
+		String realm_accessStr = null;
+		
+		try {
+			realm_accessStr = adecodedTokenMap.get("realm_access").toString();
+			Pattern p = Pattern.compile("(?<=\\[)([^\\]]+)(?=\\])");
+			Matcher m = p.matcher(realm_accessStr);
 
-		if (m.find()) {
-			String[] roles = m.group(1).split(",");
-			for (String role : roles) {
-				userRoles.add((String) role.trim());
+			if (m.find()) {
+				String[] roles = m.group(1).split(",");
+				for (String role : roles) {
+					userRoles.add((String) role.trim());
+				}
+				;
 			}
-			;
+		} catch (Exception e) {
+			
 		}
 
 	}
