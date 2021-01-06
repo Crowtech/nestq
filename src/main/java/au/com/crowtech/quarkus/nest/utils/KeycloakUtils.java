@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -31,7 +33,10 @@ import javax.json.JsonException;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +70,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import au.com.crowtech.quarkus.nest.models.GennyToken;
+import au.com.crowtech.quarkus.nest.models.NestUser;
 import io.vertx.core.json.JsonObject;
 
 
@@ -1201,4 +1207,42 @@ public static List<LinkedHashMap> fetchKeycloakUsers(String keycloakUrl,GennyTok
     return results;
   }
 
+
+
+static public Map<String, String> getKeycloakRoles(final String baseKeycloakUrl, final String projectRealm,
+		final String token) {
+	Map<String, String> roles = new HashMap<String, String>();
+
+	java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder().build();
+
+	URI uri = UriBuilder.fromPath(baseKeycloakUrl + "/auth/admin/realms/" + projectRealm + "/roles").build();
+
+	System.out.println(uri.toString());
+	HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().version(java.net.http.HttpClient.Version.HTTP_2)
+			.header("Authorization", "Bearer " + token).build();
+
+	try {
+		java.net.http.HttpResponse response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+		System.out.println(response.body());
+		Jsonb jsonb = JsonbBuilder.create();
+		List<JsonObject> serializedList = jsonb.fromJson((String) response.body(), new ArrayList<JsonObject>() {
+		}.getClass().getGenericSuperclass());
+
+		for (JsonObject jsonObject : serializedList) {
+			String id = jsonObject.getString("id");
+			String name = jsonObject.getString("name");
+			roles.put(name, id);
+		}
+
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+	return roles;
+}
 }
