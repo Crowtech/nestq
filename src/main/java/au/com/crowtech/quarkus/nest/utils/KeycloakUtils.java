@@ -441,14 +441,14 @@ public class KeycloakUtils {
 					String locationUrl = headers[0].getValue();
 					content = locationUrl.replaceFirst(".*/(\\w+)", "$1");
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, randomCode);
-	                log.info("Keycloak User ID: " + keycloakUserId);
+	                log.info("Keycloak NestUser ID: " + keycloakUserId);
 	                return keycloakUserId;
 				} else if (statusCode == 204) {
 					Header[] headers = response.getHeaders("Location");
 					String locationUrl = headers[0].getValue();
 					content = locationUrl.replaceFirst(".*/(\\w+)", "$1");
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, randomCode);
-	                log.info("Keycloak User ID: " + keycloakUserId);
+	                log.info("Keycloak NestUser ID: " + keycloakUserId);
 	                return keycloakUserId;
 				} else if (statusCode == 409) {
 					//throw new IOException("Email is already taken. Please use a different email address.");
@@ -467,7 +467,7 @@ public class KeycloakUtils {
 					throw new IOException("We could not create the new user. Please try again.");
 				} else {
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, randomCode);
-		              log.info("Keycloak User ID: " + keycloakUserId);
+		              log.info("Keycloak NestUser ID: " + keycloakUserId);
 		              return keycloakUserId;
 				}
 			}
@@ -541,7 +541,7 @@ public class KeycloakUtils {
 				if (entity == null) {
 					throw new IOException("We could not create the new user. Please try again.");
 				} else {
-		              log.info("Keycloak User ID: " + keycloakUUID);
+		              log.info("Keycloak NestUser ID: " + keycloakUUID);
 		              return keycloakUUID;
 				}
 			}
@@ -595,14 +595,14 @@ public class KeycloakUtils {
 						KeycloakUtils.setPassword(keycloakUrl, token,  realm, content, password);
 					}
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, newUsername);
-	                log.info("Keycloak User ID: " + keycloakUserId);
+	                log.info("Keycloak NestUser ID: " + keycloakUserId);
 	                return keycloakUserId;
 				} else if (statusCode == 204) {
 					Header[] headers = response.getHeaders("Location");
 					String locationUrl = headers[0].getValue();
 					content = locationUrl.replaceFirst(".*/(\\w+)", "$1");
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, newUsername);
-	                log.info("Keycloak User ID: " + keycloakUserId);
+	                log.info("Keycloak NestUser ID: " + keycloakUserId);
 	                return keycloakUserId;
 				} else if (statusCode == 409) {
 					//throw new IOException("Email is already taken. Please use a different email address.");
@@ -621,7 +621,7 @@ public class KeycloakUtils {
 					throw new IOException("We could not create the new user. Please try again.");
 				} else {
 					String keycloakUserId = getKeycloakUserId(keycloakUrl, token, realm, newUsername);
-		              log.info("Keycloak User ID: " + keycloakUserId);
+		              log.info("Keycloak NestUser ID: " + keycloakUserId);
 		              return keycloakUserId;
 				}
 			}
@@ -742,6 +742,8 @@ public class KeycloakUtils {
 			HttpClient httpClient = new DefaultHttpClient();
 
 			try {
+				String url = keycloakUrl + "/auth/admin/realms/" + realm + "/users/" + uuid + "/reset-password";
+				log.info("Keycloak password reset = "+url);
 				HttpPut put = new HttpPut(
 						keycloakUrl + "/auth/admin/realms/" + realm + "/users/" + uuid + "/reset-password");
 
@@ -1083,7 +1085,7 @@ public class KeycloakUtils {
 		con.addRequestProperty("Content-Type", "application/json");
 		con.addRequestProperty("Authorization", "Bearer " + token);
 
-		// con.setRequestProperty("User-Agent", USER_AGENT);
+		// con.setRequestProperty("NestUser-Agent", USER_AGENT);
 		int responseCode = con.getResponseCode();
 		System.out.println("GET Response Code :: " + responseCode);
 		if (responseCode == HttpURLConnection.HTTP_OK) { // success
