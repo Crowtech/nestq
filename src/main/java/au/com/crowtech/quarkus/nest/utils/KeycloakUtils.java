@@ -569,12 +569,18 @@ public class KeycloakUtils {
 			if (!StringUtils.isBlank(keycloakUUID)) {
 				idJson = "\"id\" : \""+keycloakUUID.trim().toLowerCase() + "\",";
 			}
+			
+			if (StringUtils.isBlank(newRealmRoles)) {
+				newRealmRoles = "user";
+			}
+
 			String json = "{ " + idJson+ "\"username\" : \"" + newUsername + "\"," + "\"email\" : \"" + newEmail + "\" , "
 					+ "\"enabled\" : true, " + "\"emailVerified\" : true, " + "\"firstName\" : \"" + newFirstname + "\", "
 					+ "\"lastName\" : \"" + newLastname + "\", " + "\"groups\" : [" + " \"" + newGroupRoles + "\" " + "],"
 					+ "\"realmRoles\" : [" + "\"" + newRealmRoles + "\" " + "]" + "}";
 
 			log.info("CreateUserjson="+json);
+			log.info("keycloakUrl = "+keycloakUrl + "/auth/admin/realms/" + realm + "/users");
 			
 			HttpClient httpClient = new DefaultHttpClient();
 			//log.info("Keycloak token used is "+token);
