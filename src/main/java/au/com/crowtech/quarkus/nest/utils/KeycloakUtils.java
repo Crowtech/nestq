@@ -499,6 +499,9 @@ public class KeycloakUtils {
 				String newFirstname, String newLastname, String newEmail, String password,String newRealmRoles, String newGroupRoles)
 				throws IOException {
 			keycloakUUID = keycloakUUID.toLowerCase();
+			if (StringUtils.isBlank(newRealmRoles)) {
+				newRealmRoles = "user";
+			}
 		
 			String json = "{ " +  "\"username\" : \"" + newUsername + "\"," + "\"email\" : \"" + newEmail + "\" , "
 					+ "\"enabled\" : true, " + "\"emailVerified\" : true, " + "\"firstName\" : \"" + newFirstname + "\", "
