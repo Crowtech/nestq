@@ -1,11 +1,14 @@
 package au.com.crowtech.quarkus.nest.endpoints;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,7 +22,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import au.com.crowtech.quarkus.nest.models.GennyToken;
 import au.com.crowtech.quarkus.nest.models.NestUser;
@@ -54,6 +59,10 @@ public class UserResource {
 	
 	@Inject
 	NestResourceClient nestResourceClient;
+	
+	@Inject
+	JsonWebToken accessToken;
+
 	
 	@Transactional
 	@POST
@@ -98,6 +107,59 @@ public class UserResource {
 	}
     
     
+	@PATCH
+	@Path("/{id}")
+	@Transactional
+	public Response update(@Valid NestUser user, @PathParam("id") Long id) {
+		
+		GennyToken userToken = new GennyToken(accessToken.getRawToken());
+		
+		if (!user.id.equals(id)) {
+			throw new WebApplicationException("id mismatch", Status.FORBIDDEN);
+		}
+		
+		Optional<NestUser> entity = NestUser.findById(id);
+		if (!entity.isPresent()) {
+			throw new WebApplicationException("NestUser with id of " + id + " does not exist.", Status.NOT_FOUND);
+		}
 
+
+		if (!((userToken.hasRole("admin")) || (userToken.hasRole("dev")) || (userToken.getUuid().equals(entity.get().uuid)) ) ) {
+			
+			throw new WebApplicationException("Access denied", Status.FORBIDDEN);
+		}
+
+		
+
+		entity.get().firstname = user.firstname;
+		entity.get().lastname = user.lastname;
+		entity.get().email = user.email;
+		entity.get().mobile = user.mobile;
+		entity.get().persist();
+		return Response.ok(entity.get()).build();
+	}
+
+	@DELETE
+	@Path("user/{uuid}")
+	@Transactional
+	public void deleteUser(@PathParam String uuid) {
+		
+		GennyToken userToken = new GennyToken(accessToken.getRawToken());
+		
+		NestUser user = NestUser.findByUuid(uuid);
+		if (user == null) {
+			throw new WebApplicationException("NestUser with code of " + uuid + " does not exist.", Status.NOT_FOUND);
+		}
+
+		
+
+		if (!((userToken.hasRole("admin")) || (userToken.hasRole("dev")) || (userToken.getUuid().equals(uuid)) ) ) {
+			
+			throw new WebApplicationException("Access denied", Status.FORBIDDEN);
+		}
+
+		
+		user.delete();
+	}
     
 }

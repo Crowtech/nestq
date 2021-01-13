@@ -462,4 +462,8 @@ public class GennyToken implements Serializable {
 			log.error("Token is null or zero length in GennyToken ..");
 		}		
 	}
+	
+	public String getUsername() {
+		return getString("preferred_username");
+	}
 }
