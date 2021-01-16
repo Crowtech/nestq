@@ -1189,8 +1189,8 @@ public static Boolean isUsernameVerified(String keycloakUrl,GennyToken adminToke
 	if(!users.isEmpty()) {
 		 LinkedHashMap userMap = users.get(0);
 		 log.info("Keycloak User is "+userMap);
-		 if (userMap.containsKey("emailverified")) {
-			 ret = (Boolean) userMap.getOrDefault("emailverified",Boolean.TRUE);
+		 if (userMap.containsKey("emailVerified")) {
+			 ret = (Boolean) userMap.getOrDefault("emailVerified",Boolean.TRUE);
 		 }
 		}
 	return ret;

@@ -48,9 +48,9 @@ public class GennyToken implements Serializable {
 	private static final Logger log = Logger.getLogger(GennyToken.class);	
 
 	
-	@Inject
-	@IdToken
-	JsonWebToken accessToken;
+//	@Inject
+//	@IdToken
+//	JsonWebToken accessToken;
 
 
 	String code;
@@ -63,8 +63,8 @@ public class GennyToken implements Serializable {
 	
 	public GennyToken()
 	{
-		String token = accessToken.getRawToken();
-		processToken(token);
+//		String token = accessToken.getRawToken();
+//		processToken(token);
 	}
 	
 	public GennyToken(final String token) {
