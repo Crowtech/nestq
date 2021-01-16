@@ -1182,6 +1182,22 @@ return null;
 //		    "confirmation": "newPassword"
 //		}'
 
+public static Boolean isUsernameVerified(String keycloakUrl,GennyToken adminToken, final String realm,final String username)
+		{
+	Boolean ret = false;
+	List<LinkedHashMap> users = fetchKeycloakUsers(keycloakUrl,adminToken, realm, username);
+	if(!users.isEmpty()) {
+		 LinkedHashMap userMap = users.get(0);
+		 log.info("Keycloak User is "+userMap);
+		 if (userMap.containsKey("emailverified")) {
+			 ret = (Boolean) userMap.getOrDefault("emailverified",Boolean.TRUE);
+		 }
+		}
+	return ret;
+}
+
+
+
 public static List<LinkedHashMap> fetchKeycloakUsers(String keycloakUrl,GennyToken userToken, final String realm, final String username) {
 	List<LinkedHashMap> results = new ArrayList<LinkedHashMap>();
     final HttpClient client = new DefaultHttpClient();
