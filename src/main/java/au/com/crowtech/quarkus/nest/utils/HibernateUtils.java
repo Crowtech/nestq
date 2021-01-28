@@ -25,15 +25,31 @@ import io.agroal.api.AgroalDataSource;
 import io.quarkus.agroal.DataSource;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
+import java.util.Properties;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+
+
 @SuppressWarnings("unused")
 @ApplicationScoped
 @RegisterForReflection
 public class HibernateUtils {
 
-
-
+	private static SessionFactory sessionFactory;
+	private String username;
+	private String password;
+	
 
 	public HibernateUtils() {}
+	
+	public HibernateUtils(final String username, final String password) {
+		this.username = username;
+		this.password = password;
+		
+	}
 	
 	@Transactional
 	static public List<Object[]> query(EntityManager em,final String sql) {
@@ -80,4 +96,42 @@ public class HibernateUtils {
 
 		return rows;
 	}
+	
+	 public static SessionFactory buildSessionFactory(final String jdbcUrl,final String username, final String password,Class... clazz) {
+	        try {
+	            Properties props = new Properties();
+	            props.setProperty("hibernate.connection.url", jdbcUrl/*"jdbc:mysql://[db-host]:[db-port]/db_name"*/);
+	            props.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+	            props.setProperty("hibernate.connection.username", username);
+	            props.setProperty("hibernate.connection.password", password);
+
+	            props.setProperty("hibernate.current_session_context_class", "thread");
+	            props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+
+	            Configuration configuration = new Configuration();
+	            configuration.addProperties(props);
+	            for (Class claz : clazz) {
+	            	configuration.addAnnotatedClass(claz);
+	            }
+	            //configuration.addAnnotatedClass(ConfigurationsEntity.class);
+	            System.out.println("Hibernate Configuration loaded");
+
+	            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+	            System.out.println("Hibernate serviceRegistry created");
+
+	            SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
+	            return sessionFactory;
+	        }
+	        catch (Throwable ex) {
+	            // Make sure you log the exception, as it might be swallowed
+	            System.err.println("Initial SessionFactory creation failed." + ex);
+	            throw new ExceptionInInitializerError(ex);
+	        }
+	    }
+
+//	    public static SessionFactory getSessionFactory() {
+//	        if(sessionFactory == null) sessionFactory = buildSessionFactory();
+//	        return sessionFactory;
+//	    }
 }
