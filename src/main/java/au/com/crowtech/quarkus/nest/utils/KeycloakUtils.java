@@ -697,7 +697,7 @@ public class KeycloakUtils {
 			List<LinkedHashMap> results = new ArrayList<LinkedHashMap>();
 		    final HttpClient client = new DefaultHttpClient();
 
-		    
+		    log.info("Keycloak Url to fetch Keycloak User is "+keycloakUrl);
 		    try {
 		    	
 		      HttpGet get = null;
@@ -712,7 +712,8 @@ public class KeycloakUtils {
 		      get.addHeader("Authorization", "Bearer " + token);
 		      try {
 		        final HttpResponse response = client.execute(get);
-		        if (response.getStatusLine().getStatusCode() != 200) {
+		        log.info("Keycloak response code is "+response.getStatusLine().getStatusCode());
+		        if ((response.getStatusLine().getStatusCode() != 200)&&(response.getStatusLine().getStatusCode() != 204)) {
 		          throw new IOException();
 		        }
 		        final HttpEntity entity = response.getEntity();
