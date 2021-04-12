@@ -22,17 +22,17 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<quarkus-plugin.version>1.11.1.Final</quarkus-plugin.version>
+		<quarkus-plugin.version>1.12.1.Final</quarkus-plugin.version>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>1.11.1.Final</quarkus.platform.version>
+		<quarkus.platform.version>1.12.1.Final</quarkus.platform.version>
 		<surefire.version>2.22.0</surefire.version>
 
 		<compiler-plugin.version>3.8.1</compiler-plugin.version>
 		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<commons-lang3.version>3.10</commons-lang3.version>
 		<docker-plugin.version>0.33.0</docker-plugin.version>
-		<testcontainers.version>1.14.1</testcontainers.version>
+		<testcontainers.version>1.15.1</testcontainers.version>
 		<jandex.version>1.0.7</jandex.version>
 		<jackson-datatype-money>1.2.0</jackson-datatype-money>
 		<version.moneta>1.4.2</version.moneta>
