@@ -693,12 +693,12 @@ public class KeycloakUtils {
 	public static List<LinkedHashMap> fetchKeycloakUsers(String keycloakUrl, final String token, final String realm,
 			final String username, Integer pageIndex, Integer pageSize) {
 		List<LinkedHashMap> results = new ArrayList<LinkedHashMap>();
-		final HttpClient client = new DefaultHttpClient();
+//		final HttpClient client = new DefaultHttpClient();
 
 		log.info("Keycloak Url to fetch Keycloak User is " + keycloakUrl);
-		try {
-
-			HttpGet get = null;
+//		try {
+//
+//			HttpGet get = null;
 			String url = null;
 			if (username != null) {
 				String encodedUsername = encodeValue(username);
@@ -706,28 +706,39 @@ public class KeycloakUtils {
 			} else {
 				url = keycloakUrl + "/auth/admin/realms/" + realm + "/users?max=" + pageSize + "&first=" + pageIndex;
 			}
-			get = new HttpGet(url);
-			get.addHeader("Authorization", "Bearer " + token);
+			
 			try {
-				final HttpResponse response = client.execute(get);
-				log.info("Keycloak response code is " + response.getStatusLine().getStatusCode());
-				if ((response.getStatusLine().getStatusCode() != 200)
-						&& (response.getStatusLine().getStatusCode() != 204)) {
-					throw new IOException();
-				}
-				final HttpEntity entity = response.getEntity();
-				final InputStream is = entity.getContent();
-				try {
-					results = JsonSerialization.readValue(is, (new ArrayList<UserRepresentation>()).getClass());
-				} finally {
-					is.close();
-				}
-			} catch (final IOException e) {
-				throw new RuntimeException(e);
+				String result = sendGET(url,token);
+
+					results = JsonSerialization.readValue(result.getBytes(), (new ArrayList<UserRepresentation>()).getClass());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		} finally {
-			client.getConnectionManager().shutdown();
-		}
+
+			
+//			get = new HttpGet(url);
+//			get.addHeader("Authorization", "Bearer " + token);
+//			try {
+//				final HttpResponse response = client.execute(get);
+//				log.info("Keycloak response code is " + response.getStatusLine().getStatusCode());
+//				if ((response.getStatusLine().getStatusCode() != 200)
+//						&& (response.getStatusLine().getStatusCode() != 204)) {
+//					throw new IOException();
+//				}
+//				final HttpEntity entity = response.getEntity();
+//				final InputStream is = entity.getContent();
+//				try {
+//					results = JsonSerialization.readValue(is, (new ArrayList<UserRepresentation>()).getClass());
+//				} finally {
+//					is.close();
+//				}
+//			} catch (final IOException e) {
+//				throw new RuntimeException(e);
+//			}
+//		} finally {
+//			client.getConnectionManager().shutdown();
+//		}
 		return results;
 	}
 
