@@ -1110,7 +1110,9 @@ public class KeycloakUtils {
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
 		con.addRequestProperty("Content-Type", "application/json");
-		con.addRequestProperty("Authorization", "Bearer " + token);
+		if (!StringUtils.isBlank(token)) {
+			con.addRequestProperty("Authorization", "Bearer " + token);
+		}
 
 		// con.setRequestProperty("NestUser-Agent", USER_AGENT);
 		int responseCode = con.getResponseCode();
