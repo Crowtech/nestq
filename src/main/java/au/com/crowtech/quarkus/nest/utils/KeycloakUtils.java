@@ -172,7 +172,7 @@ public class KeycloakUtils {
 				if(refreshToken == null) {
 					formParams.add(new BasicNameValuePair("username", username));
 					formParams.add(new BasicNameValuePair("password", password));
-					log.info("using username");
+					log.info("using username: " + username);
 					formParams.add(new BasicNameValuePair(OAuth2Constants.GRANT_TYPE, "password"));
 				}
 				else {
