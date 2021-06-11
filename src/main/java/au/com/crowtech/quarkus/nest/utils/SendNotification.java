@@ -27,7 +27,7 @@ public class SendNotification {
 //			echo
 //			curl https://fcm.googleapis.com/fcm/send -H "Content-Type:application/json" -X POST -d "{\"notification\": {\"body\": \"${body}\",\"title\": \"${title}\"}, \"priority\": \"high\", \"data\": {\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\", \"id\": \"1\", \"status\": \"done\"}, \"to\": \"${token}\"}" -H "Authorization: key=AAAA_HTuyKw:APA91bEdF4e98KTB8D9eIvhrEj5RY6_v0gpO7glIzcBWazZgh567Bl-AZde6pSqEMQdXVc8eXFylfJPP-pOJbSuMeaDRSWF01EZSDf0dAqNgQhVKHC35ErdFIIwk7oc9gbmW2Js5a8MM"
 
-	public static String send(final String userNotificationToken, final String title, final String body,
+	public static String send(final String userNotificationToken, final String id,final String title, final String body,
 			final String apiKey) {
 
 		CloseableHttpResponse response2 = null;
@@ -38,7 +38,7 @@ public class SendNotification {
 		postRequest.addHeader("Content-Type", MediaType.APPLICATION_JSON);
 		postRequest.setHeader("Accept", MediaType.APPLICATION_JSON);
 		String actionsArray = "{\"notification\": {\"body\": \"" + body + "\",\"title\": \"" + title
-				+ "\"}, \"priority\": \"high\", \"data\": {\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\", \"id\": \"1\", \"status\": \"done\"}, \"to\": \""
+				+ "\"}, \"priority\": \"high\", \"data\": {\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\", \"id\": \""+id+"\", \"status\": \"done\"}, \"to\": \""
 				+ userNotificationToken + "\"}";
 		log.info(actionsArray);
 		
