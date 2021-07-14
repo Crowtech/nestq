@@ -15,12 +15,13 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
 public class LocalDateAdapter implements JsonbAdapter<LocalDate, JsonValue> {
-	 
-	 public LocalDateAdapter() {}
+
+	public LocalDateAdapter() {
+	}
 
 	@Override
 	public JsonValue adaptToJson(LocalDate obj) throws Exception {
-		
+
 		String dateTimePattern = "yyyy-MM-dd";
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
 		String localDateTimeStr = obj.format(dateFormatter);
@@ -33,10 +34,10 @@ public class LocalDateAdapter implements JsonbAdapter<LocalDate, JsonValue> {
 		String dateTimePattern = "yyyy-MM-dd";
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
 		String str = obj.toString();
-		str = str.substring(0,str.length()-1);
+		str = str.substring(0, str.length() - 1);
 		String value = str.substring(1);
 		LocalDate ret = null;
-		
+
 		try {
 			ret = dateFormatter.parse(value, LocalDate::from);
 		} catch (Exception e) {
@@ -45,14 +46,13 @@ public class LocalDateAdapter implements JsonbAdapter<LocalDate, JsonValue> {
 			ret = dateFormatter.parse(value, LocalDate::from);
 		}
 
-	return ret;
+		return ret;
 	}
-	
-	static public  LocalDateTime getLocalDateTimeFromString(final String dateTimeStr, ZoneOffset zoneOffset)
-	{
+
+	static public LocalDateTime getLocalDateTimeFromString(final String dateTimeStr, ZoneOffset zoneOffset) {
 		TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(dateTimeStr);
-	    Instant i = Instant.from(ta);
-	    LocalDateTime dt  = LocalDateTime.ofInstant(i, zoneOffset);
-	    return dt;
+		Instant i = Instant.from(ta);
+		LocalDateTime dt = LocalDateTime.ofInstant(i, zoneOffset);
+		return dt;
 	}
 }

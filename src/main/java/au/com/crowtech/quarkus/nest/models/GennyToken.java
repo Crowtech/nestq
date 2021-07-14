@@ -20,16 +20,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
-import io.quarkus.oidc.IdToken;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.lang.JoseException;
@@ -197,16 +194,25 @@ public class GennyToken implements Serializable {
 				for (String role : roles) {
 					userRoles.add((String) role.trim());
 				}
-				;
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 
 	}
 
-	public boolean hasRole(final String role) {
-		return userRoles.contains(role);
+	/**
+	 * Check if GennyToken contains one or more specified roles
+	 * @param roles - role(s) to check for
+	 * @return true if at least one of the specified roles is in the GennyToken
+	 */
+	public boolean hasRole(final String... roles) {
+		for(String role : roles) {
+			if(userRoles.contains(role))
+					return true;
+		}
+		
+		return false;
 	}
 
 	@Override
