@@ -183,7 +183,13 @@ public class GennyToken implements Serializable {
 
 	private void setupRoles() {
 		String realm_accessStr = null;
-		
+		String realm = (String)adecodedTokenMap.get("realm");
+		String pref_username = (String)adecodedTokenMap.get("preferred_username");
+		String client_id = (String)adecodedTokenMap.get("azp");
+		if("master".equals(realm) && "admin".equals(pref_username) && "admin-cli".equals(client_id)) {
+			userRoles.add("admin");
+			return;			
+		}
 		try {
 			realm_accessStr = adecodedTokenMap.get("realm_access").toString();
 			Pattern p = Pattern.compile("(?<=\\[)([^\\]]+)(?=\\])");
