@@ -220,6 +220,10 @@ public class GennyToken implements Serializable {
 		
 		return false;
 	}
+	
+	public boolean hasRole(final String role) {
+		return (userRoles.contains(role));
+	}
 
 	@Override
 	public String toString() {
