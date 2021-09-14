@@ -56,6 +56,7 @@ import au.com.crowtech.quarkus.nest.adapters.EmailAdapter;
  * @version     %I%, %G%
  * @since       1.0
  */
+// TODO: Review potential for UnmappedSuperclass here with Adam
 @Entity
 @Table(name="nuser")
 public class NestUser extends PanacheEntity {
