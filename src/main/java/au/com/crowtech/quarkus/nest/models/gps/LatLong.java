@@ -61,6 +61,7 @@ public class LatLong {
 	 * @return A new LatLong object containing the coords or null if the data is
 	 *         malformed/invalid
 	 */
+	@Deprecated
 	public static LatLong parse(String data) {
 		String[] coords = data.split(".");
 		try {

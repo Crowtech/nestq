@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
@@ -18,11 +20,14 @@ public class GenericMessage<T extends Object> implements Serializable{
     private Object[] items;
     private Long total;
     
+    public GenericMessage(PanacheQuery<T> query, Page page) {
+    	this(query.page(page).list(), query.list().size());
+    }
+    
     /**
      * @param items
      * @param total
      */
-        
     public GenericMessage(List<T> items, Long total) {
         if ((items == null) || (items.isEmpty())) {
             items = new ArrayList<>();
