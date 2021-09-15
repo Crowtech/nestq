@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.utils;
+package au.com.crowtech.quarkus.nest.utils.message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,13 +7,13 @@ import java.util.List;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class StringMessage implements Serializable{
+public class RawStringMessage implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private StringClass[] items = new StringClass[0];
+	private String[] items = new String[0];
 	private Long total = 0L;
 	
 	
@@ -21,19 +21,19 @@ public class StringMessage implements Serializable{
 	 * @param items
 	 * @param total
 	 */
-	public StringMessage() {
+	public RawStringMessage() {
 	}	
 	
 	/**
 	 * @param items
 	 * @param total
 	 */
-	public StringMessage(List<? extends StringClass> items, Long total) {
+	public RawStringMessage(List<? extends String> items, Long total) {
 		if ((items == null) || (items.isEmpty())) {
-			items = new ArrayList<StringClass>();
+			items = new ArrayList<String>();
 		}
 
-		this.items = items.toArray(new StringClass[0]);
+		this.items = items.toArray(new String[0]);
 		this.total = total;
 	}
 	
@@ -41,24 +41,24 @@ public class StringMessage implements Serializable{
 	 * @param items
 	 * @param total
 	 */
-	public StringMessage(List<? extends StringClass> items) {
+	public RawStringMessage(List<? extends String> items) {
 		if ((items == null) || (items.isEmpty())) {
-			items = new ArrayList<StringClass>();
+			items = new ArrayList<String>();
 		}
 
-		this.items = items.toArray(new StringClass[0]);
+		this.items = items.toArray(new String[0]);
 		this.total = (long)items.size();
 	}
 	/**
 	 * @return the items
 	 */
-	public StringClass[] getItems() {
+	public String[] getItems() {
 		return items;
 	}
 	/**
 	 * @param items the items to set
 	 */
-	public void setItems(StringClass[] items) {
+	public void setItems(String[] items) {
 		this.items = items;
 	}
 	/**

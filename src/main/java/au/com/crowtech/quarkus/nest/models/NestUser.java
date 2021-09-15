@@ -33,7 +33,7 @@ import au.com.crowtech.quarkus.nest.adapters.LocalDateTimeAdapter;
 import au.com.crowtech.quarkus.nest.models.Device;
 import au.com.crowtech.quarkus.nest.models.Email;
 import au.com.crowtech.quarkus.nest.models.GennyToken;
-import au.com.crowtech.quarkus.nest.models.Message;
+import au.com.crowtech.quarkus.nest.utils.message.Message;
 import au.com.crowtech.quarkus.nest.adapters.EmailAdapter;
 
 /**

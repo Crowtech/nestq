@@ -64,34 +64,10 @@ public class GPSUtils {
 
 	/**
 	 * 
-	 * @param Double[]
-	 *            coordinates1
-	 * @param Double[]
-	 *            coordinates2
+	 * @param 
 	 * @return the distance between passed coordinates in meters
 	 */
 	public static Double getDistance(Double[] coordinates1, Double[] coordinates2) {
-//		try {
-//
-//			/* Call Google Maps API to know how far the driver is */
-//			String response = QwandaUtils.apiGet("https://maps.googleapis.com/maps/api/distancematrix/json?origins="
-//					+ coordinates1[0] + "," + coordinates1[1] + "&destinations=" + coordinates2[0] + ","
-//					+ coordinates2[1] + "&mode=driving&language=pl-PL", null);
-//
-//			log.info(response);
-//			if (response != null) {
-//
-//				JsonObject distanceMatrix = new JsonObject(response);
-//				JsonArray elements = distanceMatrix.getJsonArray("rows").getJsonObject(0).getJsonArray("elements");
-//				JsonObject distance = elements.getJsonObject(0).getJsonObject("distance");
-//				Integer distanceValue = distance.getInteger("value");
-//				return distanceValue.doubleValue();
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//
-//		return -1.0;
 		if ((coordinates1[0] == coordinates2[0]) && (coordinates1[1] == coordinates2[1])) {
 			return 0.0;
 		}
@@ -105,6 +81,8 @@ public class GPSUtils {
 			return (dist);
 		}
 	}
+	
+	
 
 	
 

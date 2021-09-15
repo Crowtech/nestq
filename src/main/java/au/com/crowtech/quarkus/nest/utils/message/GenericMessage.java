@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.models;
+package au.com.crowtech.quarkus.nest.utils.message;
 
 import java.io.Serializable;
 import java.util.ArrayList;

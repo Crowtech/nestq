@@ -1,19 +1,20 @@
-package au.com.crowtech.quarkus.nest.utils;
+package au.com.crowtech.quarkus.nest.utils.message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.com.crowtech.quarkus.nest.utils.StringClass;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class RawStringMessage implements Serializable{
+public class StringMessage implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String[] items = new String[0];
+	private StringClass[] items = new StringClass[0];
 	private Long total = 0L;
 	
 	
@@ -21,19 +22,19 @@ public class RawStringMessage implements Serializable{
 	 * @param items
 	 * @param total
 	 */
-	public RawStringMessage() {
+	public StringMessage() {
 	}	
 	
 	/**
 	 * @param items
 	 * @param total
 	 */
-	public RawStringMessage(List<? extends String> items, Long total) {
+	public StringMessage(List<? extends StringClass> items, Long total) {
 		if ((items == null) || (items.isEmpty())) {
-			items = new ArrayList<String>();
+			items = new ArrayList<StringClass>();
 		}
 
-		this.items = items.toArray(new String[0]);
+		this.items = items.toArray(new StringClass[0]);
 		this.total = total;
 	}
 	
@@ -41,24 +42,24 @@ public class RawStringMessage implements Serializable{
 	 * @param items
 	 * @param total
 	 */
-	public RawStringMessage(List<? extends String> items) {
+	public StringMessage(List<? extends StringClass> items) {
 		if ((items == null) || (items.isEmpty())) {
-			items = new ArrayList<String>();
+			items = new ArrayList<StringClass>();
 		}
 
-		this.items = items.toArray(new String[0]);
+		this.items = items.toArray(new StringClass[0]);
 		this.total = (long)items.size();
 	}
 	/**
 	 * @return the items
 	 */
-	public String[] getItems() {
+	public StringClass[] getItems() {
 		return items;
 	}
 	/**
 	 * @param items the items to set
 	 */
-	public void setItems(String[] items) {
+	public void setItems(StringClass[] items) {
 		this.items = items;
 	}
 	/**
