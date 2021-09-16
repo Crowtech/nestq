@@ -79,4 +79,12 @@ public class LatLong {
 	public String toString() {
 		return latitude + "," + longitude;
 	}
+	
+	public boolean valid() {
+		return (latitude != null && longitude != null);
+	}
+	
+	public boolean isZero() {
+		return (latitude == 0 && longitude == 0);
+	}
 }
