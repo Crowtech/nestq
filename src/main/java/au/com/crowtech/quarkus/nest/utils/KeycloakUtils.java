@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -67,10 +66,10 @@ import org.keycloak.util.JsonSerialization;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import au.com.crowtech.quarkus.nest.models.GennyToken;
-import au.com.crowtech.quarkus.nest.models.NestUser;
 import io.vertx.core.json.JsonObject;
 
 public class KeycloakUtils {
@@ -569,6 +568,36 @@ public class KeycloakUtils {
 		}
 	}
 
+	public static java.net.http.HttpResponse<String> setUserRoles(String keycloakUrl, String projectRealm, GennyToken adminToken, 
+			String uuid, String[] roles) {
+		Map<String, String> roleMap = getKeycloakRoles(keycloakUrl, projectRealm, adminToken.getToken());
+		String data;
+		// Add roles
+		try {
+			data = "[";
+			
+			for (String rolename : roles) {
+				String roleid = roleMap.get(rolename);
+				if ((roleid != null) && (!"admin".equals(rolename))) {
+					data += "{ \"id\": \"" + roleid + "\",\"name\":\"" + rolename + "\" },";
+				}
+			}
+			if (StringUtils.endsWith(data, ",")) {
+				data = data.substring(0, data.length() - 1); // remove last comma
+			}
+			data += "]";
+			NestResourceClient client = new NestResourceClient();
+			return client.post(
+					keycloakUrl + "/auth/admin/realms/" + projectRealm + "/users/" + uuid + "/role-mappings/realm",
+					adminToken, data);
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			throw new WebApplicationException("Cannot create user, error in keycloak server",
+					Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	// This is the one called from rules to create a keycloak user
 	public static String createUser(String keycloakUrl, String keycloakUUID, String token, String realm,
 			String newUsername, String newFirstname, String newLastname, String newEmail, String password,
@@ -587,7 +616,7 @@ public class KeycloakUtils {
 				+ "\"enabled\" : true, " + "\"emailVerified\" : true, " + "\"firstName\" : \"" + newFirstname + "\", "
 				+ "\"lastName\" : \"" + newLastname + "\", " + "\"groups\" : [" + " \"" + newGroupRoles + "\" " + "],"
 				+ "\"realmRoles\" : [" + "\"" + newRealmRoles + "\" " + "]" + "}";
-
+		
 		log.info("CreateUserjson=" + json);
 		log.info("keycloakUrl = " + keycloakUrl + "/auth/admin/realms/" + realm + "/users");
 
@@ -1268,7 +1297,7 @@ public class KeycloakUtils {
 		return results;
 	}
 
-	static public Map<String, String> getKeycloakRoles(final String baseKeycloakUrl, final String projectRealm,
+	public static Map<String, String> getKeycloakRoles(final String baseKeycloakUrl, final String projectRealm,
 			final String token) {
 		Map<String, String> roles = new HashMap<String, String>();
 
@@ -1276,30 +1305,25 @@ public class KeycloakUtils {
 
 		URI uri = UriBuilder.fromPath(baseKeycloakUrl + "/auth/admin/realms/" + projectRealm + "/roles").build();
 
-		System.out.println(uri.toString());
 		HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().version(java.net.http.HttpClient.Version.HTTP_2)
 				.header("Authorization", "Bearer " + token).build();
 
 		try {
-			java.net.http.HttpResponse response = client.send(request,
-					java.net.http.HttpResponse.BodyHandlers.ofString());
-
-			System.out.println(response.body());
-			Jsonb jsonb = JsonbBuilder.create();
-			List<JsonObject> serializedList = jsonb.fromJson((String) response.body(), new ArrayList<JsonObject>() {
-			}.getClass().getGenericSuperclass());
-
-			for (JsonObject jsonObject : serializedList) {
-				String id = jsonObject.getString("id");
-				String name = jsonObject.getString("name");
-				roles.put(name, id);
+			java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				JsonNode json = mapper.readTree(response.body());
+				for(JsonNode role : json) {
+					String name = role.get("name").toString().replaceAll("\"","");
+					String id = role.get("id").toString().replaceAll("\"","");
+					roles.put(name, id);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

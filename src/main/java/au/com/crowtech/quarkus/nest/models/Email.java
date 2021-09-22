@@ -3,7 +3,6 @@ package au.com.crowtech.quarkus.nest.models;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Pattern;
@@ -23,7 +22,6 @@ public class Email implements Serializable {
 	// also restrict number of characters in top level domain
 	@Column(name = "email")
 	@Pattern(regexp = regex, message = "Incorrect format")
-
 	private String name;
     private Boolean validated = false;
     
@@ -34,6 +32,7 @@ public class Email implements Serializable {
 	 * @param value
 	 * @throws Exception 
 	 */
+    // TODO: Make Exception more verbose
 	public Email(String name) throws Exception {
 		this.name = name;
 		this.validated = false;
