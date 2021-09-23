@@ -25,15 +25,34 @@ public class CodeUtils {
 	 * @return
 	 */
 	public static String genCode(int length) {
-		int numUppers = generateFromRange(1, length);
-		int numLowers = generateFromRange(1, length);
-		int numDigits = generateFromRange(1, length);
+		return genCode(length, true, true, true);
+	}
+	
+	public static String genCode(int length, boolean useNum) {
+		return genCode(length, useNum, true, true);
+	}
+	
+	public static String genCode(int length, boolean useNum, boolean useLower) {
+		return genCode(length, useNum, useLower, true);
+	}
+	
+	public static String genCode(int length, boolean useNum, boolean useLower, boolean useUpper) {
+		if(!useNum && !useLower && !useUpper) {
+			return "";
+		}
+		
+		int numUppers = 0, numLowers = 0, numDigits = 0;
+		numDigits = useNum ? generateFromRange(1, length / 3) : 0;
+		
+		numLowers = useLower ? generateFromRange(1, (length - numDigits) / 2) : 0;
+		
+		numUppers = useUpper ? length - (numLowers + numDigits): 0;
 		
 		return genCode(numUppers, numLowers, numDigits);
 	}
 	
 	public static String genCode(int numUppers, int numLowers, int numDigits) {
-		String code = "";
+		String code = "";	
 		int i;
 		for(i = 0; i < numUppers; i++) {
 			Character character = generateCharFromRange('A', 'Z');
