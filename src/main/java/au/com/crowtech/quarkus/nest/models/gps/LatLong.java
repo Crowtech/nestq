@@ -80,8 +80,12 @@ public class LatLong {
 		return latitude + "," + longitude;
 	}
 	
-	public boolean valid() {
-		return (latitude != null && longitude != null);
+	public boolean isValid() {
+		if(latitude == null)
+			return false;
+		if(longitude == null)
+			return false;
+		return !isZero();
 	}
 	
 	public boolean isZero() {
