@@ -89,7 +89,7 @@ public class KeycloakUtils {
 
 			return null;
 		} catch (Exception e) {
-			log.error("Cannot get Token for USername " + username + " for realm " + realm + " on " + keycloakUrl
+			log.error("Cannot get Token for Username " + username + " for realm " + realm + " on " + keycloakUrl
 					+ " and clientId " + clientId);
 		}
 		return null;

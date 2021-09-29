@@ -36,36 +36,109 @@ public class CodeUtils {
 		return genCode(length, useNum, useLower, true);
 	}
 	
+	
 	public static String genCode(int length, boolean useNum, boolean useLower, boolean useUpper) {
 		if(!useNum && !useLower && !useUpper) {
 			return "";
 		}
+		String code = "";
 		
-		int numUppers = 0, numLowers = 0, numDigits = 0;
-		numDigits = useNum ? generateFromRange(1, length / 3) : 0;
+		// Calculate Variety
+		int variety = 0;
+		if(useNum)
+			variety++;
+		if(useLower)
+			variety++;
+		if(useUpper)
+			variety++;
 		
-		numLowers = useLower ? generateFromRange(1, (length - numDigits) / 2) : 0;
+		for(int i = 0; i < length; i++) {
+			Character nextChar = null;
+			int charType;
+			
+			switch(variety) {
+				case 1:
+					if(useNum)
+						nextChar = generateNumberChar();
+					else if(useLower)
+						nextChar = generateLower();
+					else if(useUpper)
+						nextChar = generateUpper();
+				break;
+				case 2:
+					charType = generateNumberFromRange(0, 2);
+					if(!useNum) {
+						switch(charType) {
+							case 0: // Upper
+								nextChar = generateUpper();
+								break;
+							case 1: // Lower
+								nextChar = generateNumberChar();
+								break;
+						}
+					} else if(!useLower) {
+						switch(charType) {
+							case 0: // Upper
+								nextChar = generateUpper();
+								break;
+							case 1: // Nums
+								nextChar = generateNumberChar();
+								break;
+						}
+					} else if(!useUpper) {
+						switch(charType) {
+							case 0: // Lower
+								nextChar = generateNumberChar();
+								break;
+							case 1: // Nums
+								nextChar = generateNumberChar();
+								break;
+						}
+					}
+				break;
+				case 3:
+					// gen from any
+					charType = generateNumberFromRange(0, 3);
+					switch(charType) {
+						case 0: // Lower
+							nextChar = generateLower();
+							break;
+						case 1: // Upper
+							nextChar = generateUpper();
+							break;
+						case 2: // Nums
+							nextChar = generateNumberChar();
+							break;
+					}
+				break;
+			}
+			
+			code += nextChar;
+		}
 		
-		numUppers = useUpper ? length - (numLowers + numDigits): 0;
-		
-		return genCode(numUppers, numLowers, numDigits);
+		return code;
+	}
+	
+	public static void main(String[] args) {
+		String code = genCode(2);
+		System.out.println(code);
 	}
 	
 	public static String genCode(int numUppers, int numLowers, int numDigits) {
 		String code = "";	
 		int i;
 		for(i = 0; i < numUppers; i++) {
-			Character character = generateCharFromRange('A', 'Z');
+			Character character = generateUpper();
 			code += character;
 		}
 		
 		for(i = 0; i < numLowers; i++) {
-			Character character = generateCharFromRange('a', 'z');
+			Character character = generateLower();
 			code += character;
 		}
 		
 		for(i = 0; i < numDigits; i++) {
-			Character character = generateCharFromRange('0', '9');
+			Character character = generateNumberChar();
 			code += character;
 		}
 		
@@ -147,8 +220,38 @@ public class CodeUtils {
 	public static Character generateCharFromRange(Character min, Character max) {
 		return (char)(new Random().nextInt((int)max - (int)min) + (int)min);
 	}
-	
-	public static Integer generateFromRange(int minVal, int maxVal) {
+
+	/**
+	 * Generate a number between 0 (inclusive) and 10 (exclusive)
+	 * @param minVal - minimum value
+	 * @param maxVal - maximum value
+	 * @return
+	 */
+	public static Integer generateNumberFromRange(int minVal, int maxVal) {
 		return new Random().nextInt(maxVal - minVal) + minVal;
+	}
+	
+	/**
+	 * Generate a number between 0 (inclusive) and 10 (exclusive)
+	 * @return
+	 */
+	public static Integer generateNumber() {
+		return generateNumberFromRange(0, 10);
+	}
+
+	/**
+	 * Generate a number between 0 (inclusive) and 10 (exclusive) and return it's character form
+	 * @return
+	 */
+	public static Character generateNumberChar() {
+		return generateCharFromRange('0', (char)((int)'9' + 1));
+	}
+	
+	public static Character generateUpper() {
+		return generateCharFromRange('A', 'Z');
+	}
+	
+	public static Character generateLower() {
+		return generateCharFromRange('a', 'z');
 	}
 }
