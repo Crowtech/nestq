@@ -14,9 +14,6 @@ import au.com.crowtech.quarkus.nest.adapters.LocalDateTimeAdapter;
  */
 @MappedSuperclass
 public class TrackedNestModel extends NestModel {
-
-	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
-	public LocalDateTime created = LocalDateTime.now();
 	
 	@JsonbTypeAdapter(LocalDateTimeAdapter.class)
 	public LocalDateTime lastUpdate = LocalDateTime.now();

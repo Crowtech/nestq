@@ -74,6 +74,45 @@ public class LatLong {
 		}
 
 	}
+	
+	/**
+	 * Get the distance to another LatLong pair in kilometres
+	 * @param other - Other LatLong pair to get the distance to
+	 * @return - distance as a Double in kilometres
+	 */
+	public Double distanceTo(LatLong other) {
+		return distanceTo(other.latitude, other.longitude);
+	}
+
+	/**
+	 * Get the distance to another LatLong pair in kilometres
+	 * @param other - Other LatLong pair to get the distance to
+	 * @return - distance as a Double in kilometres
+	 */
+	public Double distanceTo(GPSLocation location) {
+		return distanceTo(location.getLatitude(), location.getLongitude());
+	}
+
+	/**
+	 * Get the distance to another LatLong pair in kilometres
+	 * @param latitude - latitude of the other coordinate
+	 * @param longitude - longitude of the other coordinate
+	 * @return - distance as a Double in kilometres
+	 */
+	public Double distanceTo(Double latitude, Double longitude) {
+		if ((this.latitude == latitude) && (this.longitude == longitude)) {
+			return 0.0;
+		} else {
+			double theta = this.longitude - longitude;
+			double dist = Math.sin(Math.toRadians(this.latitude)) * Math.sin(Math.toRadians(latitude))
+					+ Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(latitude)) * Math.cos(Math.toRadians(theta));
+			dist = Math.acos(dist);
+			dist = Math.toDegrees(dist);
+			dist = dist * 60 * 1.1515;
+			dist = dist * 1.609344;
+			return (dist);
+		}
+	}
 
 	@Override
 	public String toString() {
