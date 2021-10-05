@@ -16,7 +16,7 @@ import au.com.crowtech.quarkus.nest.models.user.KeycloakUser;
 import au.com.crowtech.quarkus.nest.utils.KeycloakUtils;
 
 @SessionScoped
-public class KeycloakAdminInterface {
+public class KeycloakAdminUtils {
 	private static final Logger log = Logger.getLogger(MethodHandles.lookup().lookupClass().getCanonicalName());
 	
 	

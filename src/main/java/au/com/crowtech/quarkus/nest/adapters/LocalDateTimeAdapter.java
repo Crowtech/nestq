@@ -34,7 +34,6 @@ public class LocalDateTimeAdapter implements JsonbAdapter<LocalDateTime, JsonVal
 
 	@Override
 	public LocalDateTime adaptFromJson(JsonValue obj) throws Exception {
-		log.info(obj.toString());
 		String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
 		String str = obj.toString();
