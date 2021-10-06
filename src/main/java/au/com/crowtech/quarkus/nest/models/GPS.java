@@ -129,6 +129,10 @@ public class GPS implements Serializable {
 	{
 		this.position = position;
 	}
+	
+	public GPS(final Double latitude, final Double longitude) {
+		this(new GPSLocation(latitude, longitude));
+	}
 
 	public GPS(final Double latitude, final Double longitude,
 			   final String timestamp,
