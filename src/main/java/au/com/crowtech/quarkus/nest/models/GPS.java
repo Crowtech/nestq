@@ -10,13 +10,10 @@ import javax.validation.constraints.Size;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
-
 /**
- * gps is the abstract base class for all gps
- * managed in the Qwanda library.
- * An GPS object is used as a means of storing information
- * from a source about a target GPS.  This
- * gps information includes:
+ * gps is the abstract base class for all gps managed in the Qwanda library. An
+ * GPS object is used as a means of storing information from a source about a
+ * target GPS. This gps information includes:
  * <ul>
  * <li>GPS Location (Latitude/Longitude)
  * <li>The time at which the gps was created
@@ -27,124 +24,118 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
  * <p>
  * 
  * 
- * @author      Adam Crow
- * @version     %I%, %G%
- * @since       1.0
+ * @author Adam Crow
+ * @version %I%, %G%
+ * @since 1.0
  */
 
 @Embeddable
 @RegisterForReflection
 public class GPS implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	/**
 	 * Stores the Created UMT DateTime that this object was created
 	 */
 //	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-    @Column(name = "received")
-    private LocalDateTime received;
+	@Column(name = "received")
+	private LocalDateTime received;
 
-	
+	/*
+	 * A field that stores the location. <p>
+	 */
+//	@Embedded
+	// private GPSLocation position;
+
+	// Sue me if this works
+	private Double latitude;
+	private Double longitude;
+
 	/**
-	A field that stores the location.
-	<p>
-	*/
-	@Embedded
-	private GPSLocation position;
+	 * A field that stores the timestamp.
+	 * <p>
+	 */
+	// @NotNull
+	@Size(max = 32)
+	@Column(name = "timestamp", updatable = false, nullable = true)
+	private String timestamp;
 
- 
-    /**
-    A field that stores the timestamp.
-    <p>
-    */
-   // @NotNull
-    @Size(max = 32)
-    @Column(name = "timestamp", updatable = false, nullable = true)
-    private String timestamp;
-
-    /**
-    A field that stores the accuracy.
-    <p>
-    */
-  //  @NotNull
-    @Column(name = "accuracy", updatable = false, nullable = true)
-    private Double accuracy;
-
-    /**
-    A field that stores the bearing/heading.
-    <p>
-    */
-  //  @NotNull
-    @Column(name = "bearing", updatable = false, nullable = true)
-    private Double bearing;
-
-    /**
-    A field that stores the altitude.
-    <p>
-    */
-  //  @NotNull
-    @Column(name = "altitude", updatable = false, nullable = true)
-    private Double altitude;
-    
-    /**
-    A field that stores the altitude accuracy.
-    <p>
-    */
- //   @NotNull
-    @Column(name = "altitude_accuracy", updatable = false, nullable = true)
-    private Double altitude_accuracy;
-    
-    /**
-    A field that stores the speed.
-    <p>
-    */
-  //  @NotNull
-    @Column(name = "speed", updatable = true, nullable = true)
-    private Double speed;
-    
-	
 	/**
-	  * Constructor.
-	  * 
-	  * @param none
-	  */
+	 * A field that stores the accuracy.
+	 * <p>
+	 */
+	// @NotNull
+	@Column(name = "accuracy", updatable = false, nullable = true)
+	private Double accuracy;
+
+	/**
+	 * A field that stores the bearing/heading.
+	 * <p>
+	 */
+	// @NotNull
+	@Column(name = "bearing", updatable = false, nullable = true)
+	private Double bearing;
+
+	/**
+	 * A field that stores the altitude.
+	 * <p>
+	 */
+	// @NotNull
+	@Column(name = "altitude", updatable = false, nullable = true)
+	private Double altitude;
+
+	/**
+	 * A field that stores the altitude accuracy.
+	 * <p>
+	 */
+	// @NotNull
+	@Column(name = "altitude_accuracy", updatable = false, nullable = true)
+	private Double altitude_accuracy;
+
+	/**
+	 * A field that stores the speed.
+	 * <p>
+	 */
+	// @NotNull
+	@Column(name = "speed", updatable = true, nullable = true)
+	private Double speed;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param none
+	 */
 	@SuppressWarnings("unused")
-	public GPS()
-	{
+	public GPS() {
 		// dummy for hibernate
 	}
 
 	/**
-	  * Constructor.
-	  * 
-	  * @param aCode The unique code for the attribute associated with this Answer
-	  * @param value The associated String value
-	  */
-	public GPS(final GPSLocation position)
-	{
-		this.position = position;
+	 * Constructor.
+	 * 
+	 * @param aCode The unique code for the attribute associated with this Answer
+	 * @param value The associated String value
+	 */
+	public GPS(final GPSLocation position) {
+		//this.position = position;
+		this.latitude = position.getLatitude();
+		this.longitude = position.getLongitude();
 	}
-	
+
 	public GPS(final Double latitude, final Double longitude) {
 		this(new GPSLocation(latitude, longitude));
 	}
 
-	public GPS(final Double latitude, final Double longitude,
-			   final String timestamp,
-			   final Double accuracy,
-			   final Double bearing,
-			   final Double altitude,
-			   final Double altitude_accuracy,
-			   final Double speed			   
-			)
-	{
-		
-		this.position = new GPSLocation(latitude,longitude);
+	public GPS(final Double latitude, final Double longitude, final String timestamp, final Double accuracy,
+			final Double bearing, final Double altitude, final Double altitude_accuracy, final Double speed) {
+
+		//his.position = new GPSLocation(latitude, longitude);
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.timestamp = timestamp;
 		this.accuracy = accuracy;
 		this.bearing = bearing;
@@ -152,22 +143,19 @@ public class GPS implements Serializable {
 		this.altitude_accuracy = altitude_accuracy;
 		this.speed = speed;
 	}
-	
 
-
-  /**
+	/**
 	 * @return the received
 	 */
 	public LocalDateTime getReceived() {
 		return received;
 	}
-
-	/**
-	 * @return the position
-	 */
-	public GPSLocation getPosition() {
-		return position;
-	}
+	/*
+		*//**
+			 * @return the position
+			 *//*
+				 * public GPSLocation getPosition() { return position; }
+				 */
 
 	/**
 	 * @return the timestamp
@@ -211,8 +199,7 @@ public class GPS implements Serializable {
 		return speed;
 	}
 
-	
-/**
+	/**
 	 * @param received the received to set
 	 */
 	public void setReceived(LocalDateTime received) {
@@ -223,7 +210,13 @@ public class GPS implements Serializable {
 	 * @param position the position to set
 	 */
 	public void setPosition(GPSLocation position) {
-		this.position = position;
+		//this.position = position;
+		this.setPosition(position.getLatitude(), position.getLongitude());
+	}
+
+	public void setPosition(Double lat, Double lon) {
+		this.latitude = lat;
+		this.longitude = lon;
 	}
 
 	/**
@@ -268,13 +261,30 @@ public class GPS implements Serializable {
 		this.speed = speed;
 	}
 
-/* (non-Javadoc)
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    return "GPS [ lat/long=" + position + ", bearing=" + bearing  + "]";
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "GPS [ lat/long=" + new GPSLocation(latitude, longitude) + ", bearing=" + bearing + "]";
+	}
 
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 
 }

@@ -92,7 +92,7 @@ public class GPSLocation  implements  Comparable<Object>, Serializable  {
 	/**
 	 * @param latitude the latitude to set
 	 */
-	public void setLatitude(Double latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
@@ -106,7 +106,7 @@ public class GPSLocation  implements  Comparable<Object>, Serializable  {
 	/**
 	 * @param longitude the longitude to set
 	 */
-	public void setLongitude(Double longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
