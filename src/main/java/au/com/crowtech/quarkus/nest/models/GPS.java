@@ -3,9 +3,9 @@ package au.com.crowtech.quarkus.nest.models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.validation.constraints.Size;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -271,6 +271,7 @@ public class GPS implements Serializable {
 		return "GPS [ lat/long=" + new GPSLocation(latitude, longitude) + ", bearing=" + bearing + "]";
 	}
 
+	@JsonbTransient
 	public Double getLatitude() {
 		return latitude;
 	}
@@ -279,12 +280,17 @@ public class GPS implements Serializable {
 		this.latitude = latitude;
 	}
 
+	@JsonbTransient
 	public Double getLongitude() {
 		return longitude;
 	}
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+	
+	public GPSLocation getPosition() {
+		return new GPSLocation(latitude, longitude);
 	}
 
 }

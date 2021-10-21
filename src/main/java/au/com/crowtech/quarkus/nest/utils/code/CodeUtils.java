@@ -1,4 +1,4 @@
-package au.com.crowtech.quarkus.nest.utils;
+package au.com.crowtech.quarkus.nest.utils.code;
 
 import java.util.ArrayList;
 import java.util.List;
