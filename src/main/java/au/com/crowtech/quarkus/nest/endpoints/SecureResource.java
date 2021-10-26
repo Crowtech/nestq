@@ -55,7 +55,9 @@ public abstract class SecureResource extends GenericResource {
 		
 		info("Looking for user with uuid: "+uuid);
 		if (user == null) {
-			info("NOT FOUND!");
+			info("User on keycloak but not on database, or uuid is dodgy");
+			info("Uuid: " + uuid);
+			error("NOT FOUND!");
 			throw new WebApplicationException("User not recognised. Access denied", Status.FORBIDDEN);
 		}
 		info("FOUND USER!");

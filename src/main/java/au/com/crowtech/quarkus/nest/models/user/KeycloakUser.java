@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.Logger;
 
 import au.com.crowtech.quarkus.nest.adapters.EmailAdapter;
@@ -68,7 +69,7 @@ public abstract class KeycloakUser extends TrackedNestModel {
 	}
 	
 	public static KeycloakUser findByEmail(String email) {
-		return KeycloakUser.find("email.name", email).firstResult();
+		return KeycloakUser.find("email", email).firstResult();
 	}	
 	
 	// GETTERS AND SETTERS ==============================================
@@ -80,7 +81,7 @@ public abstract class KeycloakUser extends TrackedNestModel {
 	public String getFullName() {
 		if(middlename == null)
 			middlename = "";
-		else middlename = " " + middlename;
+		else if(!StringUtils.isBlank(middlename)) middlename = " " + middlename;
 		return firstname + middlename + " " + lastname;
 	}
 

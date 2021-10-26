@@ -70,7 +70,7 @@ public class KeycloakAdminUtils {
 		String uuid = null;
 
 		try {
-			uuid = KeycloakUtils.createUser(keycloakUrl, adminToken.getToken(), "pantatransport", user.username,
+			uuid = KeycloakUtils.createUser(keycloakUrl, adminToken.getToken(), projectRealm, user.username,
 					user.firstname, user.lastname, user.email.getName(), password, roles, grouproles);
 			/*
 			 * uuid = KeycloakUtils.createUser(keycloakUrl, adminToken.getToken(),
