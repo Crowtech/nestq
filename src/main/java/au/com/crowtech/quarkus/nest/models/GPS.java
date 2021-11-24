@@ -268,7 +268,10 @@ public class GPS implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "GPS [ lat/long=" + new GPSLocation(latitude, longitude) + ", bearing=" + bearing + "]";
+		return "GPS [ lat/long=" + new GPSLocation(latitude, longitude) 
+				+ ", bearing=" + bearing 
+				+ ", speed=" + speed
+				+ "]";
 	}
 
 	@JsonbTransient
