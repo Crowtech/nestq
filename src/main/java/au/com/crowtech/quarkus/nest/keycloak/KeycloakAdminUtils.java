@@ -56,7 +56,7 @@ public class KeycloakAdminUtils {
 			throw new BadUserException(Status.EXPECTATION_FAILED, "Username of user is null");
 		}
 
-		KeycloakUser existing = KeycloakUser.findByEmail(user.email.getName());
+		KeycloakUser existing = KeycloakUser.findByEmail(user.email);
 		log.info("Existing: " + (existing != null));
 		if (existing != null) {
 			throw new BadUserException(Status.CONFLICT, "User already exists with email: " + user.email.getName());

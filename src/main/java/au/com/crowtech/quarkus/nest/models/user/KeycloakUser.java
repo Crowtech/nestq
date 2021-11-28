@@ -68,7 +68,7 @@ public abstract class KeycloakUser extends TrackedNestModel {
 		return KeycloakUser.find("uuid", uuid).firstResult();
 	}
 	
-	public static KeycloakUser findByEmail(String email) {
+	public static KeycloakUser findByEmail(Email email) {
 		return KeycloakUser.find("email", email).firstResult();
 	}	
 	
