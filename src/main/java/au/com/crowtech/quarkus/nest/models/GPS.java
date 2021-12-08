@@ -78,7 +78,7 @@ public class GPS implements Serializable {
 	 * <p>
 	 */
 	// @NotNull
-	@Column(name = "bearing", updatable = true, nullable = true)
+	@Column(name = "bearing", updatable = false, nullable = true)
 	private Double bearing;
 
 	/**
@@ -102,7 +102,7 @@ public class GPS implements Serializable {
 	 * <p>
 	 */
 	// @NotNull
-	@Column(name = "speed", updatable = true, nullable = true)
+	@Column(name = "speed", updatable = false, nullable = true)
 	private Double speed;
 
 	/**
