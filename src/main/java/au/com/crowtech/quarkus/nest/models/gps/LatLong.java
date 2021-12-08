@@ -113,6 +113,50 @@ public class LatLong {
 			return (dist);
 		}
 	}
+	
+	/**
+	 * Get the True north bearing using the haversine formula
+	 * @param otherLat - latitude (in degrees) of the point to get the true north bearing of
+	 * @param otherLon - longitude (in degrees) of the point to get the true north bearing of
+	 * @return bearing in degrees, relative to North
+	 * 
+	 * @see <a href="https://www.movable-type.co.uk/scripts/latlong.html">moveable-type.co.uk/scripts/latlong</a>
+	 * @see <a href="https://stackoverflow.com/questions/3932502/calculate-angle-between-two-latitude-longitude-points">Stack Overflow Topic</a>
+	 * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine Formula</a>
+	 * @see <a href="https://gis.stackexchange.com/questions/29239/calculate-bearing-between-two-decimal-gps-coordinates/29240#29240?s=17f63f5fbdf14239bc4caf823f8414b5">Google Stack Exchange Topic</a>
+	 */
+	public Double getBearing(Double targetLat, Double targetLon) {
+		targetLat = Math.toRadians(targetLat);
+		targetLon = Math.toRadians(targetLon);
+		double deltaLong = targetLon - Math.toRadians(longitude);
+	
+		double deltaPhi = Math.log(Math.tan(targetLat/2.0 + Math.PI / 4.0)/Math.tan(Math.toRadians(latitude) / 2.0+Math.PI / 4.0));
+		if (Math.abs(deltaLong) > Math.PI) {
+		     if (deltaLong > 0.0)
+		         deltaLong = -(2.0 * Math.PI - deltaLong);
+		     else
+		         deltaLong = (2.0 * Math.PI + deltaLong);
+	
+		}
+		
+		return (Math.toDegrees(Math.atan2(deltaLong, deltaPhi)) + 360.0) % 360.0;
+	}
+
+	/**
+	 * Get the True north bearing using the haversine formula
+	 * @param other - LatLong pair (in degrees) to get the true north bearing of
+	 * @return bearing in degrees, relative to North
+	 * 
+	 * @see <a href="https://www.movable-type.co.uk/scripts/latlong.html">moveable-type.co.uk/scripts/latlong</a>
+	 * @see <a href="https://stackoverflow.com/questions/3932502/calculate-angle-between-two-latitude-longitude-points">Stack Overflow Topic</a>
+	 * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine Formula</a>
+	 * @see <a href="https://gis.stackexchange.com/questions/29239/calculate-bearing-between-two-decimal-gps-coordinates/29240#29240?s=17f63f5fbdf14239bc4caf823f8414b5">Google Stack Exchange Topic</a>
+	 */
+	public Double getBearing(LatLong other) {
+		return getBearing(other.latitude, other.longitude);
+	}
+	
+
 
 	@Override
 	public String toString() {

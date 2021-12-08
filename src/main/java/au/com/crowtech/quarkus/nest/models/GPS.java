@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
 
+import au.com.crowtech.quarkus.nest.models.gps.LatLong;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
@@ -133,7 +134,7 @@ public class GPS implements Serializable {
 	public GPS(final Double latitude, final Double longitude, final String timestamp, final Double accuracy,
 			final Double bearing, final Double altitude, final Double altitude_accuracy, final Double speed) {
 
-		//his.position = new GPSLocation(latitude, longitude);
+		//this.position = new GPSLocation(latitude, longitude);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.timestamp = timestamp;
@@ -143,7 +144,28 @@ public class GPS implements Serializable {
 		this.altitude_accuracy = altitude_accuracy;
 		this.speed = speed;
 	}
-
+	
+	public void update(GPS other) {
+		if(other.latitude != null)
+			this.latitude = other.latitude;
+		if(other.longitude != null)
+			this.longitude = other.longitude;
+		if(other.bearing != null)
+			this.bearing = other.bearing;
+		if(other.speed != null)
+			this.speed = other.speed;
+		if(other.accuracy != null)
+			this.accuracy = other.accuracy;
+	}
+	
+	// TODO: Finish implementing this pending testing of the bearing
+	/*
+	public Boolean isFacing(LatLong coords) {
+		Double bearing = new LatLong(latitude, longitude).getBearing(coords);
+		
+	}
+	*/
+	
 	/**
 	 * @return the received
 	 */
