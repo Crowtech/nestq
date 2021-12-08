@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
 
-import au.com.crowtech.quarkus.nest.models.gps.LatLong;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
@@ -53,7 +52,9 @@ public class GPS implements Serializable {
 	// private GPSLocation position;
 
 	// Sue me if this works
+	@Column(name = "latitude", updatable = false, nullable = false)
 	private Double latitude;
+	@Column(name = "longitude", updatable = false, nullable = false)
 	private Double longitude;
 
 	/**
@@ -143,19 +144,6 @@ public class GPS implements Serializable {
 		this.altitude = altitude;
 		this.altitude_accuracy = altitude_accuracy;
 		this.speed = speed;
-	}
-	
-	public void update(GPS other) {
-		if(other.latitude != null)
-			this.latitude = other.latitude;
-		if(other.longitude != null)
-			this.longitude = other.longitude;
-		if(other.bearing != null)
-			this.bearing = other.bearing;
-		if(other.speed != null)
-			this.speed = other.speed;
-		if(other.accuracy != null)
-			this.accuracy = other.accuracy;
 	}
 	
 	// TODO: Finish implementing this pending testing of the bearing
