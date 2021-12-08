@@ -46,7 +46,7 @@ public abstract class SecureResource extends GenericResource {
 
 		if (roles.length != 0 && !userToken.hasRole(roles)) {
 			KeycloakUser user = this.getAuthenticatedUser();
-			info("User: " + user.getFullName() + " missing roles: " + roles);
+			info("User: " + user.getFullName() + " missing one of the following roles: " + arrToString(roles));
 			throw new WebApplicationException("Access denied", Status.FORBIDDEN);
 		}
 
@@ -62,6 +62,16 @@ public abstract class SecureResource extends GenericResource {
 		}
 		info("FOUND USER!");
 		return user;
+	}
+	
+	private String arrToString(String[] roles) {
+		String string = "";
+		for(int i = 0; i < roles.length - 1; i++) {
+			string += roles + ",";
+		}
+		string += roles;
+		
+		return string;
 	}
 	
 	public JsonWebToken accessToken() {
