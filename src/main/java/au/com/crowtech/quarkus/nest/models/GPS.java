@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
 
+import au.com.crowtech.quarkus.nest.models.gps.LatLong;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
@@ -147,12 +148,26 @@ public class GPS implements Serializable {
 	}
 	
 	// TODO: Finish implementing this pending testing of the bearing
-	/*
-	public Boolean isFacing(LatLong coords) {
-		Double bearing = new LatLong(latitude, longitude).getBearing(coords);
+	
+	public Boolean isFacing(LatLong coords, double range) {
+		Double bearingToPoint = new LatLong(latitude, longitude).getBearing(coords);
+		double minBearing = this.bearing - range / 2;
+		double maxBearing = this.bearing + range / 2;
+		if(maxBearing > 360) {
+			maxBearing -= 360;
+		}
 		
+		if(minBearing < 0) {
+			minBearing += 360;
+		}
+		
+		if(bearingToPoint <= maxBearing) {
+			return bearingToPoint >= minBearing;
+		}
+		
+		return false;
 	}
-	*/
+	
 	
 	/**
 	 * @return the received

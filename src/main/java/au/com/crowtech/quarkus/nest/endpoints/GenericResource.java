@@ -55,6 +55,10 @@ public abstract class GenericResource {
 		output(message, genLog::warn);
 	}
 	
+	protected void debug(Object message) {
+		output(message, genLog::debug);
+	}
+	
 	protected String getUrl(UriInfo uriInfo) {
 		return "";
 	}

@@ -155,8 +155,6 @@ public class LatLong {
 	public Double getBearing(LatLong other) {
 		return getBearing(other.latitude, other.longitude);
 	}
-	
-
 
 	@Override
 	public String toString() {
