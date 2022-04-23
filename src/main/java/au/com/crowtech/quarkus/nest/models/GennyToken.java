@@ -58,6 +58,7 @@ public class GennyToken implements Serializable {
 	Set<String> userRoles = new HashSet<String>();
 
 	
+	@Deprecated
 	public GennyToken()
 	{
 //		String token = accessToken.getRawToken();
@@ -70,8 +71,8 @@ public class GennyToken implements Serializable {
 	}
 
 	public GennyToken(final String code, final String token) {
-
 		this(token);
+		log.info("[!]Token: " + token);
 		this.code = code;
 	}
 
