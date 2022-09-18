@@ -2,6 +2,7 @@ package au.com.crowtech.quarkus.nest.endpoints;
 
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -28,7 +29,7 @@ public abstract class SecureResource extends GenericResource {
 	@Inject
 	JsonWebToken token;
 
-	@Inject
+	@Context
 	private SecurityContext securityContext; 
 	
 	public String getRawToken() {
