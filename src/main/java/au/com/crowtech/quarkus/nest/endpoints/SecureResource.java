@@ -33,12 +33,14 @@ public abstract class SecureResource extends GenericResource {
 	private SecurityContext securityContext; 
 	
 	public String getRawToken() {
-		if(token != null) {
+		if(token != null || "".equals(token.getRawToken().strip())) {
 			return token.getRawToken();
 		}
 		genLog.warn("Failed to get Token through JsonWebToken. Using SecurityContext workaround");
 		if(securityContext != null) {
-			return securityContext.getUserPrincipal().getName();
+			String token = securityContext.getUserPrincipal().getName();
+			genLog.info("Found token through SecurityContext: " + token);
+			return token;
 		}
 
 		return null;
