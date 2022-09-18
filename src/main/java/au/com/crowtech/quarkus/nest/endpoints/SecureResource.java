@@ -3,6 +3,7 @@ package au.com.crowtech.quarkus.nest.endpoints;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
@@ -26,7 +27,22 @@ public abstract class SecureResource extends GenericResource {
 	
 	@Inject
 	JsonWebToken token;
+
+	@Inject
+	private SecurityContext securityContext; 
 	
+	private String getRawToken() {
+		if(token != null) {
+			return token.getRawToken();
+		}
+		genLog.warn("Failed to get Token through JsonWebToken. Using SecurityContext workaround");
+		if(securityContext != null) {
+			return securityContext.getUserPrincipal().getName();
+		}
+
+		return null;
+	}
+
 	/**
 	 * Return a {@link KeycloakUser} based on the provided {@link JsonWebToken}.
 	 * Throws {@link WebApplicationException} if there are supplied roles to check against
@@ -38,11 +54,12 @@ public abstract class SecureResource extends GenericResource {
 	 * @throws WebApplicationException - if roles are not blank and user doesn't match at least one of supplied roles
 	 */
 	protected KeycloakUser getAuthenticatedUser(String... roles) throws WebApplicationException {
-		if (StringUtils.isBlank(token.getRawToken())) {
+		String tokenString = getRawToken();
+		if (StringUtils.isBlank(tokenString)) {
 			throw new WebApplicationException("Token is Null or Empty", Status.FORBIDDEN);
 		}
 		
-		GennyToken userToken = new GennyToken(token.getRawToken());
+		GennyToken userToken = new GennyToken(tokenString);
 
 		if (roles.length != 0 && !userToken.hasRole(roles)) {
 			KeycloakUser user = this.getAuthenticatedUser();
@@ -73,17 +90,13 @@ public abstract class SecureResource extends GenericResource {
 		
 		return string;
 	}
-	
-	public JsonWebToken accessToken() {
-		return token;
-	}
 
 	public String getTokenUuid() {
 		return getGennyToken().getUuid();
 	}
 	
 	public GennyToken getGennyToken() {
-		return new GennyToken(token.getRawToken());
+		return new GennyToken(getRawToken());
 	}
 	
 	protected boolean checkTokenRole(String... roles) {
