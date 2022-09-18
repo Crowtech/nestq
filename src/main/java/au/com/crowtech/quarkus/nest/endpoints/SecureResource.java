@@ -31,7 +31,7 @@ public abstract class SecureResource extends GenericResource {
 	@Inject
 	private SecurityContext securityContext; 
 	
-	private String getRawToken() {
+	public String getRawToken() {
 		if(token != null) {
 			return token.getRawToken();
 		}
